@@ -159,7 +159,8 @@ async function forgotPassword(req, res, next) {
         );
       }
       try {
-        const resetURL = `${req.get("host")}/resetPassword/${resetToken}`;
+        // const resetURL = `${req.get("host")}/resetPassword/${resetToken}`;
+        const resetURL = `reset token`;
         const message = `Forgot your password? Submit a PATCH request with the new password and passwordConfirm to ${resetURL}.\nIf you didn't forget your password, please ignore this email.`;
 
         await sendMail({
