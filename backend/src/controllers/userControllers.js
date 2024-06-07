@@ -27,7 +27,10 @@ const createAccount = async (req, res, next) => {
     }
 
     if (existingUser) {
-      throw new AppError("User with this email already exists", 400);
+      throw new AppError(
+        "User with this email already exists. Proceed to login!",
+        400
+      );
     }
 
     const hashed_password = await bcrypt.hash(password, 8);
