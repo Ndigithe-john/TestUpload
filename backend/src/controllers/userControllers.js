@@ -12,29 +12,50 @@ const {
   resetPasswordValidator,
   loginValidator,
 } = require("../validators/userValidators");
-const createAccount = async (req, res) => {
+const createAccount = async (req, res, next) => {
   try {
     const { full_name, email, password } = req.body;
+
+    const { data: existingUser, error: fetchError } = await supabase
+      .from("users")
+      .select("email")
+      .eq("email", email)
+      .single();
+
+    if (fetchError && fetchError.code !== "PGRST116") {
+      throw new AppError("Error checking for existing user", 500);
+    }
+
+    if (existingUser) {
+      throw new AppError("User with this email already exists", 400);
+    }
+
     const hashed_password = await bcrypt.hash(password, 8);
     signupValidator(req.body);
-    const new_user = await supabase
-      .from("users")
-      .insert([{ full_name, email, password: hashed_password }]);
 
-    if (new_user) {
-      console.log(new_user);
-      res.status(200).json({
-        status: true,
-        message: "User created successfully",
-      });
-    } else {
-      return next(new AppError("Error connecting to the database", 500));
+    const { data: new_user, error: insertError } = await supabase
+      .from("users")
+      .insert([{ full_name, email, password: hashed_password }])
+      .single();
+
+    if (insertError) {
+      throw new AppError("Error creating user", 500);
     }
+
+    res.status(200).json({
+      status: true,
+      message: "User created successfully",
+    });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    if (error instanceof AppError) {
+      res.status(error.statusCode).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: error.message });
+    }
   }
 };
+
 async function login(req, res, next) {
   try {
     const login_body = req.body;
