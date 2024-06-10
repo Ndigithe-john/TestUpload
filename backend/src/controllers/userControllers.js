@@ -159,10 +159,8 @@ async function forgotPassword(req, res, next) {
         );
       }
       try {
-        // const resetURL = `${req.get("host")}/resetPassword/${resetToken}`;
-        const resetURL = `reset token`;
+        const resetURL = `${req.get("host")}/resetPassword/${resetToken}`;
         const message = `Forgot your password? Submit a PATCH request with the new password and passwordConfirm to ${resetURL}.\nIf you didn't forget your password, please ignore this email.`;
-
         await sendMail({
           email: email,
           subject: "Password Reset Prompt",
@@ -174,6 +172,7 @@ async function forgotPassword(req, res, next) {
           message: "Token sent to email",
         });
       } catch (emailError) {
+        console.log(emailError);
         await supabase
           .from("users")
           .update({

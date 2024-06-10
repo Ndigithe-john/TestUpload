@@ -13,5 +13,6 @@ const email_config = {
     rejectUnauthorized: false,
   },
 };
+console.log();
 
 module.exports = email_config;
