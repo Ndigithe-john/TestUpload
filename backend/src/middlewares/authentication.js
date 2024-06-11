@@ -13,7 +13,6 @@ const userProtect = (req, res, next) => {
 
   try {
     const decoded = tokenVerifier(token);
-    console.log(decoded);
     req.user = decoded;
     next();
   } catch (err) {
@@ -23,7 +22,7 @@ const userProtect = (req, res, next) => {
 const adminProtect = (req, res, next) => {
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
-  console.log(token);
+
   if (!token) {
     return next(
       new AppError("You are not logged in! Please log in to get access.", 401)
@@ -32,7 +31,6 @@ const adminProtect = (req, res, next) => {
 
   try {
     const decoded = tokenVerifier(token);
-    console.log(decoded);
     if (decoded.role !== "admin") {
       return next(
         new AppError(
