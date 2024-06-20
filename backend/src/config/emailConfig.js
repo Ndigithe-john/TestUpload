@@ -9,9 +9,6 @@ const email_config = {
     user: process.env.EMAIL_USERNAME,
     pass: process.env.EMAIL_PASSWORD,
   },
-  tls: {
-    rejectUnauthorized: false,
-  },
 };
 
 module.exports = email_config;
