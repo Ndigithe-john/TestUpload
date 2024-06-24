@@ -55,6 +55,7 @@ const uploadUniversityDocs = async (req, res, next) => {
     next(new AppError(`Error: ${error.message}`, 500));
   }
 };
+
 const uploadHighSchoolDocs = async (req, res, next) => {
   try {
     const { title, course, type, pdf_url } = req.body;
@@ -64,7 +65,6 @@ const uploadHighSchoolDocs = async (req, res, next) => {
       .from("highschool")
       .insert([{ title, course, type, pdf_url }]);
     console.log("Supabase response:", JSON.stringify(response, null, 2));
-
     if (response.error) {
       console.error("Supabase error:", JSON.stringify(response.error, null, 2));
 

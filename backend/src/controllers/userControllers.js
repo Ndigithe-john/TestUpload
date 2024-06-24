@@ -4,7 +4,8 @@ const crypto = require("crypto");
 const AppError = require("../utils/appError");
 const supabase = require("../config/supabaseClient");
 const User = require("../utils/getUserByEmail");
-const { tokenGenerator } = require("../utils/tokens");
+const { BlackListedRedisClient } = require("../config/redisConfig");
+const { tokenGenerator, tokenVerifier } = require("../utils/tokens");
 const sendMail = require("../utils/email");
 const {
   signupValidator,
@@ -12,6 +13,7 @@ const {
   resetPasswordValidator,
   loginValidator,
 } = require("../validators/userValidators");
+
 const createAccount = async (req, res, next) => {
   try {
     const { full_name, email, password } = req.body;
@@ -248,17 +250,21 @@ async function resetPassword(req, res, next) {
     return next(new AppError(error.message, 500));
   }
 }
-async function logout(req, res, next) {
-  // try {
-  //   const user = r;
-  //   if (user) {
-  //     req.session.destroy();
-  //     return next(new AppError("Logged out successfully", 200));
-  //   }
-  // } catch (error) {
-  //   console.log(error);
-  //   return next(new AppError(error.message, 500));
-  // }
+async function logout(req, res) {
+  try {
+    const token = req.header("Authorization").replace("Bearer ", "");
+    const currentTime = Math.floor(Date.now() / 1000);
+    console.log(currentTime);
+    const accessTokenLife = tokenVerifier(token).exp - currentTime;
+    console.log(accessTokenLife);
+    await BlackListedRedisClient.setEx(token, accessTokenLife, "true");
+    res.status(200).json({
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "INTERNAL_SERVER_ERROR" });
+  }
 }
 
 module.exports = {
