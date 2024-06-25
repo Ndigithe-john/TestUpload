@@ -1,11 +1,12 @@
+require("dotenv").config();
 const Redis = require("redis");
 
 const RedisClient = Redis.createClient({
-  url: "redis://localhost:6379",
+  url: process.env.REDIS_URL,
 });
 
 const BlackListedRedisClient = Redis.createClient({
-  url: "redis://localhost:6379",
+  url: process.env.REDIS_URL,
   password: "",
 });
 RedisClient.on("connect", () => {
