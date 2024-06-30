@@ -22,9 +22,7 @@ const userProtect = async (req, res, next) => {
     next();
   } catch (err) {
     console.log(err);
-    return next(
-      new AppError("Something went wrong. Please try again later!", 500)
-    );
+    return next(new AppError(err, 500));
   }
 };
 const adminProtect = async (req, res, next) => {

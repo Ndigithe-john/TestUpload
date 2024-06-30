@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const AppError = require("./src/utils/appError");
 const globalErrorHandlers = require("./src/controllers/errorControllers");
-
+const paymentRoutes = require("./src/routes/paymentRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
 const documentsRoutes = require("./src/routes/documentsRoutes");
@@ -15,7 +15,7 @@ const {
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+app.use("/payment", paymentRoutes);
 app.use("/", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/", documentsRoutes);

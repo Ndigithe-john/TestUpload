@@ -130,7 +130,7 @@ async function adminLogin(req, res, next) {
     }
   } catch (error) {
     console.log(error.message);
-    return next(new AppError(`Error logging in: ${error.message}`, 500));
+    return next(new AppError(`Error logging in. Invalid credentials`, 500));
   }
 }
 

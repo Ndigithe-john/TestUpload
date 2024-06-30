@@ -12,21 +12,22 @@ CREATE TABLE Users (
 CREATE TABLE University (
     pdf_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title VARCHAR(100) NOT NULL,
-    course VARCHAR(100) NOT NULL,
-    type VARCHAR(100) NOT NULL,
-    pdf_url VARCHAR(100) NOT NULL
+    course VARCHAR(250) NOT NULL,
+    type VARCHAR(250) NOT NULL,
+    pdf_url VARCHAR(250) NOT NULL
 );
 CREATE TABLE HighSchool (
     pdf_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR(100) NOT NULL,
-    course VARCHAR(100) NOT NULL,
-    type VARCHAR(100) NOT NULL,
-    pdf_url VARCHAR(100) NOT NULL
+    title VARCHAR(250) NOT NULL,
+    course VARCHAR(250) NOT NULL,
+    type VARCHAR(250) NOT NULL,
+    pdf_url VARCHAR(250) NOT NULL
 );
 CREATE TABLE CBC (
     pdf_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR(100) NOT NULL,
+    title VARCHAR(250) NOT NULL,
     course VARCHAR(100) NOT NULL,
-    type VARCHAR(100) NOT NULL,
-    pdf_url VARCHAR(100) NOT NULL
+    type VARCHAR(250) NOT NULL,
+    pdf_url VARCHAR(250) NOT NULL
 );
+
